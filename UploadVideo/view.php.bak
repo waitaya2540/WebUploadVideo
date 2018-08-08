@@ -1,0 +1,104 @@
+<?php session_start(); ?>
+<?php
+	if (empty($_GET['id'])) {
+		die("error1");
+	}
+
+	$id = $_GET['id'];
+
+	if ( ! preg_match("/[0-9]+/", $id)) {
+		die("error2");
+	}
+
+	include 'connectdb.php';
+	$query = mysqli_query($con, "SELECT * FROM tbupload WHERE id = $id");
+	$result = mysqli_fetch_assoc($query);
+
+	if (count($result) < 1) {
+		die("error3");
+	}
+
+	$query = mysqli_query($con, "UPDATE tbupload SET view = view + 1 WHERE id = $id");
+
+	// $result = $result[0];
+
+	// var_dump($result);
+
+ ?>
+ <!DOCTYPE html>
+ <html>
+ <head>
+    <link href="/phpmyadmin/workV2/asset/css/bootstrap.min.css" rel="stylesheet">
+ 	<title><?php echo $result['NAME']; ?></title>
+ 	<style type="text/css">
+
+ 	.wallper{
+ 		width: 1200px;
+ 		margin: 0 auto;
+ 		background-color: #464544;
+ 	}
+
+ 	.wallper2{
+ 		width: 1150px;
+ 		margin: 0 auto;
+ 		font-size: 20px;
+ 		background-color:
+ 	}
+
+ 	.astyle{
+ 		color: #FFF;
+ 		text-decoration: none;
+ 	}
+
+ 	a:hover{
+ 		color: #3D00D6;
+ 		text-decoration: none;
+ 	}
+
+ 	</style>
+ </head>
+ <body style="text-align: center; background-color: #FFF;" >
+
+	 <nav class="navbar navbar-default">
+	 <div class="container-fluid">
+	 	<div class="navbar-header">
+	 		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	 			<span class="sr-only">Toggle navigation</span>
+	 			<span class="icon-bar"></span>
+	 			<span class="icon-bar"></span>
+	 			<span class="icon-bar"></span>
+	 		</button>
+	 		<a class="navbar-brand" href="/phpmyadmin/workV2/Homepage.php"><i class="glyphicon glyphicon-home" style="font-size: 23px;"></i></a>
+	 	</div>
+
+	 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	 		<ul class="nav navbar-nav">
+	 			<?php if(empty($_SESSION['user_data'])): ?>
+	 			<?php else: ?>
+	 				<li class="active"><a href="index.php"><i style="">Upload</i><span class="sr-only">(current)</span></a></li>
+	 			<?php endif; ?>
+	 		</ul>
+	 	<ul class="nav navbar-nav navbar-right">
+	 		<?php if(empty($_SESSION['user_data'])): ?>
+	 			<li class="dropdown">
+	 			<li><a href="/phpmyadmin/workV2/login1/frm_register.php">Register</a></li>
+	 			<li><a href="/phpmyadmin/workV2/login1/index.php">Login</a></li>
+	 			</li>
+	 		<?php else: ?>
+	 			<li><a href="#"><?php echo 'ยินดีตอนรับคุณ:' . $_SESSION['user_data']['login_Username']; ?></a></li>
+	 			<li><a href="/phpmyadmin/workV2/login1/logout.php">ออกจากระบบ</a></li>
+	 		<?php endif; ?>
+	 		</ul>
+	 		</div>
+	 	</div>
+	 </nav>
+
+ <div class="wallper">
+ 	<br><div class="wallper2" align="left"><a href="index.php" class="astyle">&nbsp;กลับหน้าแรก</a></div><br>
+ 	<video controls="true" width="95%" src="<?php echo $result['URL']; ?>"></video>
+ 	<div style="color: #FFF;" align="right" class="wallper2">
+ 		<?php echo $result['NAME']; ?>
+ 		<br>ดู: <?php echo $result['view'] + 1; ?> ครั้ง&nbsp;<br><br>
+ 	</div>
+ </body>
+ </html>
