@@ -1,2 +1,2 @@
 # WebUploadVideo
-WebUploadVideo -> PHP + HTML + Javascript + MYSQL + FFMPEG + Bootstrap
+WebUploadVideo -> PHP + HTML + CSS + Javascript + MYSQL + FFMPEG + Bootstrap
